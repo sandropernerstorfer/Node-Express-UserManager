@@ -1,0 +1,23 @@
+section{
+    padding: 60px 30px;
+}
+
+#tab-content{
+    padding: 20px;
+}
+
+#table-users tr:nth-child(even){
+    background-color: #CFE1FF;
+    color: #444;
+}
+
+#table-users button{
+    padding: 1px 5px;
+}
+
+tr td:nth-child(1){
+    font-weight: 700;
+}
+tr td:nth-child(2){
+    text-transform: uppercase;
+}
