@@ -7,8 +7,9 @@ renderUsers();  //* Renders all Users @ page load
 form.addEventListener('submit', e => {
     e.preventDefault();
     const name = form.name.value;
+    const mail = form.email.value;
     const pass = form.password.value;
-    createUser(name, pass);
+    createUser(name, mail, pass);
 });
 
 document.addEventListener('click', e => {
@@ -25,17 +26,19 @@ document.addEventListener('click', e => {
 
     const userID = parseInt(e.target.dataset.userid);
     const newName = prompt('New Name');
+    const newMail = prompt('New Email');
     const newPass = prompt('New Password');
-    editUser(userID, newName, newPass);
+    editUser(userID, newName, newMail, newPass);
 });
 
-function editUser(id, name, pass){
+function editUser(id, name, mail, pass){
     $.ajax({
         url: '/editUser',
         method: 'PUT',
         data: {
             id: id,
             name: name,
+            mail: mail,
             pass: pass
         }
         }).done(res => {
@@ -55,12 +58,13 @@ function deleteUser(id){
     });
 };
 
-function createUser(name, pass){
+function createUser(name, mail, pass){
     $.ajax({
         url: '/setUser',
         method: 'POST',
         data: {
             name : name,
+            mail: mail,
             pass : pass
         }
         }).done(res => {
@@ -80,6 +84,7 @@ function renderUsers(){
                 <td>${user[0]}</td>
                 <td>${user[1]}</td>
                 <td>${user[2]}</td>
+                <td>${user[3]}</td>
                 <td><button class="btn btn-warning edit-btn" data-userid="${user[0]}">Edit</button></td>
                 <td><button class="btn btn-danger delete-btn" data-userid="${user[0]}">Delete</button></td>
             </tr>

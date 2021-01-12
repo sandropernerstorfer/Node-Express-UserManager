@@ -31,7 +31,7 @@ app.post('/setUser', (req,res)=>{
         newId = lastUser[0]+1;
     }
 
-    usersArray.push([newId, req.body.name, req.body.pass]);
+    usersArray.push([newId, req.body.name, req.body.mail, req.body.pass]);
 
     usersObject = {users : usersArray};
 
@@ -72,7 +72,8 @@ app.put('/editUser', (req,res)=>{
     usersArray.forEach( user => {
         if(user[0] == editData.id){
             user[1] = editData.name;
-            user[2] = editData.pass;
+            user[2] = editData.mail;
+            user[3] = editData.pass;
         }
     });
 
