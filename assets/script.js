@@ -2,13 +2,13 @@ const form = document.querySelector('#user-form');
 const table = document.querySelector('#table-users');
 const users = document.querySelector('#users-tab');
 
-renderUsers();  //* Renders all Users @ page load
+renderUsers();
 
 form.addEventListener('submit', e => {
     e.preventDefault();
     const name = form.name.value;
-    const mail = form.email.value;
-    const pass = form.password.value;
+    const mail = form.mail.value;
+    const pass = form.pass.value;
     createUser(name, mail, pass);
 });
 

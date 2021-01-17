@@ -21,3 +21,22 @@ tr td:nth-child(1){
 tr td:nth-child(2){
     text-transform: uppercase;
 }
+
+#user-count{
+    display: inline-block;
+    height: 17px;
+    line-height: 14px;
+    padding-bottom: 16px;
+}
+
+#user-form{
+    position: relative;
+    margin: 0 auto;
+    max-width: 410px;
+}
+
+#user-form small{
+    display: inline;
+    position: absolute;
+    right: 10px;
+}
