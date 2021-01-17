@@ -21,24 +21,37 @@ app.get('/getUsers', (req,res)=>{
 
 app.post('/setUser', (req,res)=>{
 
-    let rawUsers = fs.readFileSync('./data/user.json');
-    let usersObject = JSON.parse(rawUsers);
+    let usersObject = JSON.parse(fs.readFileSync('./data/user.json'));
     let usersArray = usersObject.users;
 
-    let newId = 1;
-    if(usersArray.length != 0){
-        let lastUser = usersArray[usersArray.length-1];
-        newId = lastUser[0]+1;
+    let newUser = [req.body.name,req.body.mail,req.body.pass];
+
+    let errMsg = [];
+    errMsg.push(newUser[0].length < 2 ? 'Name needs 2 char' : '');
+    errMsg.push(!newUser[1].includes('@')|| !newUser[1].includes('.') ? 'Enter valid mail' : '');
+    errMsg.push(newUser[2].length < 8 ? 'Pass needs 8 char' : '');
+    const calc = errMsg[0]+errMsg[1]+errMsg[2];
+
+    if(calc == ''){
+        let newId = 1;
+        if(usersArray.length != 0){
+            let lastUser = usersArray[usersArray.length-1];
+            newId = lastUser[0]+1;
+        }
+        
+        newUser.unshift(newId);
+        usersArray.push(newUser);
+
+        usersObject = {users : usersArray};
+
+        fs.writeFile('./data/user.json', JSON.stringify(usersObject) , (err)=>{
+            if(err) throw err;
+        })
+        res.status(200).end();
     }
-
-    usersArray.push([newId, req.body.name, req.body.mail, req.body.pass]);
-
-    usersObject = {users : usersArray};
-
-    fs.writeFile('./data/user.json', JSON.stringify(usersObject) , (err)=>{
-        if(err) throw err;
-    })
-    res.status(200).end();
+    else{
+        res.status(200).end(JSON.stringify(errMsg));
+    }
 });
 
 app.delete('/deleteUser', (req,res)=>{

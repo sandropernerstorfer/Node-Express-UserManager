@@ -1,15 +1,18 @@
 const form = document.querySelector('#user-form');
 const table = document.querySelector('#table-users');
 const users = document.querySelector('#users-tab');
+const formErrors = document.querySelectorAll('.form-error');
 
 renderUsers();
 
 form.addEventListener('submit', e => {
     e.preventDefault();
-    const name = form.name.value;
-    const mail = form.mail.value;
-    const pass = form.pass.value;
-    createUser(name, mail, pass);
+    const newUser = {
+        name : form.name.value,
+        mail : form.mail.value,
+        pass : form.pass.value
+    };
+    createRequest(newUser);
 });
 
 document.addEventListener('click', e => {
@@ -58,19 +61,22 @@ function deleteUser(id){
     });
 };
 
-function createUser(name, mail, pass){
+function createRequest(object){
     $.ajax({
         url: '/setUser',
         method: 'POST',
-        data: {
-            name : name,
-            mail: mail,
-            pass : pass
-        }
+        data: JSON.stringify(object),
+        contentType:'application/json'
         }).done(res => {
-            renderUsers();
-            users.click();
-            form.reset();
+            if(res == ''){
+                renderUsers();
+                users.click();
+                form.reset();
+                formError(null);
+            }
+            else{
+                formError(JSON.parse(res));
+            }
     })
 };
 
@@ -93,3 +99,10 @@ function renderUsers(){
         })
     });
 };
+
+function formError(msgArray){
+    if(msgArray == null) msgArray = ['','',''];
+    for(let i = 0; msgArray.length > i; i++){
+        formErrors[i].innerText = msgArray[i];
+    }
+}
