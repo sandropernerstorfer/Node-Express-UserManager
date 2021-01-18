@@ -25,14 +25,11 @@ app.post('/setUser', (req,res)=>{
     let usersArray = usersObject.users;
 
     let newUser = [req.body.name,req.body.mail,req.body.pass];
+    
+    const errorArray = validateData(newUser);
+    const hasError = errorArray.pop();
 
-    let errMsg = [];
-    errMsg.push(newUser[0].length < 2 ? 'At least 2 characters' : '');
-    errMsg.push(!newUser[1].includes('@')|| !newUser[1].includes('.') ? 'Enter a valid Email-Address' : '');
-    errMsg.push(newUser[2].length < 8 ? 'At least 8 characters' : '');
-    const calc = errMsg[0]+errMsg[1]+errMsg[2];
-
-    if(calc == ''){
+    if(!hasError){
         let newId = 1;
         if(usersArray.length != 0){
             let lastUser = usersArray[usersArray.length-1];
@@ -50,7 +47,7 @@ app.post('/setUser', (req,res)=>{
         res.status(200).end();
     }
     else{
-        res.status(200).end(JSON.stringify(errMsg));
+        res.status(200).end(JSON.stringify(errorArray));
     }
 });
 
@@ -97,3 +94,13 @@ app.put('/editUser', (req,res)=>{
     })
     res.status(200).end(); 
 });
+
+function validateData(newData){
+    let errMsg = [];
+    errMsg.push(newData[0].length < 2 ? 'At least 2 characters' : '');
+    errMsg.push(!newData[1].includes('@')|| !newData[1].includes('.') ? 'Enter a valid Email-Address' : '');
+    errMsg.push(newData[2].length < 8 ? 'At least 8 characters' : '');
+    errMsg.push(errMsg[0]+errMsg[1]+errMsg[2] == '' ? false : true);
+
+    return errMsg;
+}
