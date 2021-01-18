@@ -7,6 +7,7 @@ const countBadge = document.querySelector('#user-count');
 
 getUsers();
 
+// Create User Form
 form.addEventListener('submit', e => {
     e.preventDefault();
     const newUser = {
@@ -17,6 +18,28 @@ form.addEventListener('submit', e => {
     createUser(newUser);
 });
 
+// Edit User Handling
+let userToEdit = [];
+document.addEventListener('click', e => {
+    if(e.target.matches('.edit-btn')){
+        const userID = parseInt(e.target.dataset.userid);
+        const newUser = {
+        name : prompt('New Name'),
+        mail : prompt('New Email'),
+        pass : prompt('New Password')
+        };
+        editUser(userID, newUser);
+    }
+    else if(e.target.matches('.delete-btn')){
+
+    }
+    else if(e.target.matches('.ok-button')){
+
+    }
+    else return;
+});
+
+// Delete User Button
 document.addEventListener('click', e => {
     if(!e.target.matches('.delete-btn')) return;
 
@@ -24,23 +47,12 @@ document.addEventListener('click', e => {
     deleteUser(userID);
 });
 
-document.addEventListener('click', e => {
-    if(!e.target.matches('.edit-btn')) return;
-
-    const userID = parseInt(e.target.dataset.userid);
-    const newUser = {
-        name : prompt('New Name'),
-        mail : prompt('New Email'),
-        pass : prompt('New Password')
-    };
-    editUser(userID, newUser);
-});
-
+// Clear Errors on Form Open
 create.addEventListener('click', () => {
     formError();
 });
 
-// GET / Render
+// GET / render
 function getUsers(){
     $.ajax({
         url: '/user',
@@ -93,6 +105,7 @@ function deleteUser(id){
     });
 };
 
+// Render Users into list
 function renderUsers(users){
     let userCount = 0;
         table.innerHTML = '';
@@ -114,6 +127,7 @@ function renderUsers(users){
         countBadge.innerText = userCount;
 };
 
+// Form Error Messages
 function formError(msgArray = ['','','']){
     for(let i = 0; msgArray.length > i; i++){
         formErrors[i].innerText = msgArray[i];
