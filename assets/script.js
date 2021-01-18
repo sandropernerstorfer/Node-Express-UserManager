@@ -3,8 +3,9 @@ const table = document.querySelector('#table-users');
 const users = document.querySelector('#users-tab');
 const create = document.querySelector('#create-tab');
 const formErrors = document.querySelectorAll('.form-error');
+const countBadge = document.querySelector('#user-count');
 
-renderUsers();
+getUsers();
 
 form.addEventListener('submit', e => {
     e.preventDefault();
@@ -17,7 +18,6 @@ form.addEventListener('submit', e => {
 });
 
 document.addEventListener('click', e => {
-
     if(!e.target.matches('.delete-btn')) return;
 
     const userID = parseInt(e.target.dataset.userid);
@@ -25,7 +25,6 @@ document.addEventListener('click', e => {
 });
 
 document.addEventListener('click', e => {
-
     if(!e.target.matches('.edit-btn')) return;
 
     const userID = parseInt(e.target.dataset.userid);
@@ -37,15 +36,68 @@ document.addEventListener('click', e => {
     editUser(userID, newUser);
 });
 
+create.addEventListener('click', () => {
+    formError();
+});
+
 // GET / Render
-function renderUsers(){
+function getUsers(){
     $.ajax({
         url: '/user',
         method: 'GET'
     }).done(res => {
-        table.innerHTML = '';
         const users = JSON.parse(res);
+        renderUsers(users);
+    });
+};
+
+// POST / create
+function createUser(object){
+    $.ajax({
+        url: '/user',
+        method: 'POST',
+        data: JSON.stringify(object),
+        contentType:'application/json'
+        }).done(res => {
+            if(res == ''){
+                getUsers();
+                users.click();
+                form.reset();
+                formError();
+            }
+            else{
+                formError(JSON.parse(res));
+            }
+    });
+};
+
+// PUT / edit
+function editUser(id, object){
+    $.ajax({
+        url: '/user/'+id,
+        method: 'PUT',
+        data: JSON.stringify(object),
+        contentType:'application/json'
+        }).done(res => {
+            getUsers();
+    });
+};
+
+// DELETE / remove
+function deleteUser(id){
+    $.ajax({
+        url: '/user/'+id,
+        method: 'DELETE'
+        }).done(res => {
+            getUsers();
+    });
+};
+
+function renderUsers(users){
+    let userCount = 0;
+        table.innerHTML = '';
         users.forEach(user => {
+            userCount++;
             let userHtml = 
             `
             <tr>
@@ -59,49 +111,7 @@ function renderUsers(){
             `;
             table.innerHTML += userHtml;
         });
-    });
-};
-
-// POST / create
-function createUser(object){
-    $.ajax({
-        url: '/user',
-        method: 'POST',
-        data: JSON.stringify(object),
-        contentType:'application/json'
-        }).done(res => {
-            if(res == ''){
-                renderUsers();
-                users.click();
-                form.reset();
-                formError();
-            }
-            else{
-                formError(JSON.parse(res));
-            }
-    })
-};
-
-// PUT / edit
-function editUser(id, object){
-    $.ajax({
-        url: '/user/'+id,
-        method: 'PUT',
-        data: JSON.stringify(object),
-        contentType:'application/json'
-        }).done(res => {
-            renderUsers();
-    });
-};
-
-// DELETE / remove
-function deleteUser(id){
-    $.ajax({
-        url: '/user/'+id,
-        method: 'DELETE'
-        }).done(res => {
-            renderUsers();
-    });
+        countBadge.innerText = userCount;
 };
 
 function formError(msgArray = ['','','']){
@@ -109,7 +119,3 @@ function formError(msgArray = ['','','']){
         formErrors[i].innerText = msgArray[i];
     };
 };
-
-create.addEventListener('click', e => {
-    formError();
-});
