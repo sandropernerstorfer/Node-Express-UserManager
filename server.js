@@ -19,26 +19,21 @@ app.get('/getUsers', (req,res)=>{
     res.end(JSON.stringify(usersArray));
 });
 
-app.post('/setUser', (req,res)=>{
+app.post('/user', (req,res)=>{
 
     let usersObject = JSON.parse(fs.readFileSync('./data/user.json'));
     let usersArray = usersObject.users;
-
-    let newUser = [req.body.name,req.body.mail,req.body.pass];
     
-    const errorArray = validateData(newUser);
-    const hasError = errorArray.pop();
+    const errorArray = validateData([req.body.name,req.body.mail,req.body.pass]);
 
-    if(!hasError){
+    if(!errorArray){
         let newId = 1;
         if(usersArray.length != 0){
             let lastUser = usersArray[usersArray.length-1];
             newId = lastUser[0]+1;
         }
-        
-        newUser.unshift(newId);
+        const newUser = [newId,req.body.name,req.body.mail,req.body.pass];
         usersArray.push(newUser);
-
         usersObject = {users : usersArray};
 
         fs.writeFile('./data/user.json', JSON.stringify(usersObject) , (err)=>{
@@ -51,18 +46,15 @@ app.post('/setUser', (req,res)=>{
     }
 });
 
-app.delete('/deleteUser', (req,res)=>{
+app.delete('/user/:uid', (req,res)=>{
 
-    const userID = parseInt(req.body.id)
-    
-    let rawUsers = fs.readFileSync('./data/user.json');
-    let usersObject = JSON.parse(rawUsers);
+    let usersObject = JSON.parse(fs.readFileSync('./data/user.json'));
     let usersArray = usersObject.users;
 
+    const userID = parseInt(req.params.uid);
     const newArray = usersArray.filter(user =>{
         return user[0] != userID;
     });
-
     usersObject = {users : newArray};
 
     fs.writeFile('./data/user.json', JSON.stringify(usersObject) , (err)=>{
@@ -97,10 +89,9 @@ app.put('/editUser', (req,res)=>{
 
 function validateData(newData){
     let errMsg = [];
-    errMsg.push(newData[0].length < 2 ? 'At least 2 characters' : '');
+    errMsg.push(newData[0].trim().length < 2 ? 'At least 2 characters' : '');
     errMsg.push(!newData[1].includes('@')|| !newData[1].includes('.') ? 'Enter a valid Email-Address' : '');
-    errMsg.push(newData[2].length < 8 ? 'At least 8 characters' : '');
-    errMsg.push(errMsg[0]+errMsg[1]+errMsg[2] == '' ? false : true);
+    errMsg.push(newData[2].trim().length < 8 ? 'At least 8 characters' : '');
 
-    return errMsg;
+    return errMsg[0]+errMsg[1]+errMsg[2] == '' ? false : errMsg;
 }

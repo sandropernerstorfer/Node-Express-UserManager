@@ -52,11 +52,8 @@ function editUser(id, name, mail, pass){
 
 function deleteUser(id){
     $.ajax({
-        url: '/deleteUser',
-        method: 'DELETE',
-        data: {
-            id: id
-        }
+        url: '/user/'+id,
+        method: 'DELETE'
         }).done(res => {
             renderUsers();
     });
@@ -64,7 +61,7 @@ function deleteUser(id){
 
 function createRequest(object){
     $.ajax({
-        url: '/setUser',
+        url: '/user',
         method: 'POST',
         data: JSON.stringify(object),
         contentType:'application/json'
@@ -101,8 +98,7 @@ function renderUsers(){
     });
 };
 
-function formError(msgArray){
-    if(msgArray == undefined) msgArray = ['','',''];
+function formError(msgArray = ['','','']){
     for(let i = 0; msgArray.length > i; i++){
         formErrors[i].innerText = msgArray[i];
     };
