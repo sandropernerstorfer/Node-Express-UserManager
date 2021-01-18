@@ -1,6 +1,7 @@
 const form = document.querySelector('#user-form');
 const table = document.querySelector('#table-users');
 const users = document.querySelector('#users-tab');
+const create = document.querySelector('#create-tab');
 const formErrors = document.querySelectorAll('.form-error');
 
 renderUsers();
@@ -72,7 +73,7 @@ function createRequest(object){
                 renderUsers();
                 users.click();
                 form.reset();
-                formError(null);
+                formError();
             }
             else{
                 formError(JSON.parse(res));
@@ -91,18 +92,22 @@ function renderUsers(){
                 <td>${user[1]}</td>
                 <td>${user[2]}</td>
                 <td>${user[3]}</td>
-                <td><button class="btn btn-warning edit-btn" data-userid="${user[0]}">Edit</button></td>
+                <td><button class="btn btn-info edit-btn" data-userid="${user[0]}">Edit</button></td>
                 <td><button class="btn btn-danger delete-btn" data-userid="${user[0]}">Delete</button></td>
             </tr>
-            `
-            table.innerHTML += userHtml
+            `;
+            table.innerHTML += userHtml;
         })
     });
 };
 
 function formError(msgArray){
-    if(msgArray == null) msgArray = ['','',''];
+    if(msgArray == undefined) msgArray = ['','',''];
     for(let i = 0; msgArray.length > i; i++){
         formErrors[i].innerText = msgArray[i];
-    }
-}
+    };
+};
+
+create.addEventListener('click', e => {
+    formError();
+});

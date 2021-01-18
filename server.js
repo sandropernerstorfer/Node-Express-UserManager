@@ -27,9 +27,9 @@ app.post('/setUser', (req,res)=>{
     let newUser = [req.body.name,req.body.mail,req.body.pass];
 
     let errMsg = [];
-    errMsg.push(newUser[0].length < 2 ? 'Name needs 2 char' : '');
-    errMsg.push(!newUser[1].includes('@')|| !newUser[1].includes('.') ? 'Enter valid mail' : '');
-    errMsg.push(newUser[2].length < 8 ? 'Pass needs 8 char' : '');
+    errMsg.push(newUser[0].length < 2 ? 'At least 2 characters' : '');
+    errMsg.push(!newUser[1].includes('@')|| !newUser[1].includes('.') ? 'Enter a valid Email-Address' : '');
+    errMsg.push(newUser[2].length < 8 ? 'At least 8 characters' : '');
     const calc = errMsg[0]+errMsg[1]+errMsg[2];
 
     if(calc == ''){
