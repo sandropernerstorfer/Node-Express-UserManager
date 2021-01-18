@@ -61,22 +61,19 @@ app.delete('/user/:uid', (req,res)=>{
     res.status(200).end();
 });
 
-app.put('/editUser', (req,res)=>{
+app.put('/user/:uid', (req,res)=>{
 
-    const editData = req.body;
-
-    let rawUsers = fs.readFileSync('./data/user.json');
-    let usersObject = JSON.parse(rawUsers);
+    let usersObject = JSON.parse(fs.readFileSync('./data/user.json'));
     let usersArray = usersObject.users;
+    const userID = parseInt(req.params.uid);
 
     usersArray.forEach( user => {
-        if(user[0] == editData.id){
-            user[1] = editData.name;
-            user[2] = editData.mail;
-            user[3] = editData.pass;
+        if(user[0] == userID){
+            user[1] = req.body.name;
+            user[2] = req.body.mail;
+            user[3] = req.body.pass;
         }
     });
-
     usersObject = {users : usersArray};
 
     fs.writeFile('./data/user.json', JSON.stringify(usersObject) , (err)=>{

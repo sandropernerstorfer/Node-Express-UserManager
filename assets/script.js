@@ -29,10 +29,12 @@ document.addEventListener('click', e => {
     if(!e.target.matches('.edit-btn')) return;
 
     const userID = parseInt(e.target.dataset.userid);
-    const newName = prompt('New Name');
-    const newMail = prompt('New Email');
-    const newPass = prompt('New Password');
-    editUser(userID, newName, newMail, newPass);
+    const newUser = {
+        name : prompt('New Name'),
+        mail : prompt('New Email'),
+        pass : prompt('New Password')
+    };
+    editUser(userID, newUser);
 });
 
 // GET / Render
@@ -81,16 +83,12 @@ function createUser(object){
 };
 
 // PUT / edit
-function editUser(id, name, mail, pass){
+function editUser(id, object){
     $.ajax({
-        url: '/editUser',
+        url: '/user/'+id,
         method: 'PUT',
-        data: {
-            id: id,
-            name: name,
-            mail: mail,
-            pass: pass
-        }
+        data: JSON.stringify(object),
+        contentType:'application/json'
         }).done(res => {
             renderUsers();
     });
