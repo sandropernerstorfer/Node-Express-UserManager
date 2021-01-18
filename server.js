@@ -11,10 +11,8 @@ app.use(express.static('assets'));
 app.use(express.urlencoded({extended:true}));
 app.use(express.json());
 
-app.get('/getUsers', (req,res)=>{
-
-    let rawUsers = fs.readFileSync('./data/user.json');
-    let usersObject = JSON.parse(rawUsers);
+app.get('/user', (req,res)=>{
+    let usersObject = JSON.parse(fs.readFileSync('./data/user.json'));
     let usersArray = usersObject.users;
     res.end(JSON.stringify(usersArray));
 });

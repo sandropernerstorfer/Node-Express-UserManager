@@ -13,7 +13,7 @@ form.addEventListener('submit', e => {
         mail : form.mail.value,
         pass : form.pass.value
     };
-    createRequest(newUser);
+    createUser(newUser);
 });
 
 document.addEventListener('click', e => {
@@ -35,31 +35,33 @@ document.addEventListener('click', e => {
     editUser(userID, newName, newMail, newPass);
 });
 
-function editUser(id, name, mail, pass){
+// GET / Render
+function renderUsers(){
     $.ajax({
-        url: '/editUser',
-        method: 'PUT',
-        data: {
-            id: id,
-            name: name,
-            mail: mail,
-            pass: pass
-        }
-        }).done(res => {
-            renderUsers();
+        url: '/user',
+        method: 'GET'
+    }).done(res => {
+        table.innerHTML = '';
+        const users = JSON.parse(res);
+        users.forEach(user => {
+            let userHtml = 
+            `
+            <tr>
+                <td>${user[0]}</td>
+                <td>${user[1]}</td>
+                <td>${user[2]}</td>
+                <td>${user[3]}</td>
+                <td><button class="btn btn-info edit-btn" data-userid="${user[0]}">Edit</button></td>
+                <td><button class="btn btn-danger delete-btn" data-userid="${user[0]}">Delete</button></td>
+            </tr>
+            `;
+            table.innerHTML += userHtml;
+        });
     });
 };
 
-function deleteUser(id){
-    $.ajax({
-        url: '/user/'+id,
-        method: 'DELETE'
-        }).done(res => {
-            renderUsers();
-    });
-};
-
-function createRequest(object){
+// POST / create
+function createUser(object){
     $.ajax({
         url: '/user',
         method: 'POST',
@@ -78,23 +80,29 @@ function createRequest(object){
     })
 };
 
-function renderUsers(){
-    $.getJSON('/getUsers', function(allUsers) {
-        table.innerHTML = '';
-        allUsers.forEach(user => {
-            let userHtml = 
-            `
-            <tr>
-                <td>${user[0]}</td>
-                <td>${user[1]}</td>
-                <td>${user[2]}</td>
-                <td>${user[3]}</td>
-                <td><button class="btn btn-info edit-btn" data-userid="${user[0]}">Edit</button></td>
-                <td><button class="btn btn-danger delete-btn" data-userid="${user[0]}">Delete</button></td>
-            </tr>
-            `;
-            table.innerHTML += userHtml;
-        })
+// PUT / edit
+function editUser(id, name, mail, pass){
+    $.ajax({
+        url: '/editUser',
+        method: 'PUT',
+        data: {
+            id: id,
+            name: name,
+            mail: mail,
+            pass: pass
+        }
+        }).done(res => {
+            renderUsers();
+    });
+};
+
+// DELETE / remove
+function deleteUser(id){
+    $.ajax({
+        url: '/user/'+id,
+        method: 'DELETE'
+        }).done(res => {
+            renderUsers();
     });
 };
 
