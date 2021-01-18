@@ -24,9 +24,14 @@ tr td:nth-child(2){
 
 #user-count{
     display: inline-block;
-    height: 17px;
-    line-height: 14px;
-    padding-bottom: 16px;
+    margin-left: 5px;
+    min-width: 19px;
+    text-align: center;
+}
+
+#users-tab{
+    display: inline-flex;
+    align-items: center;
 }
 
 #user-form{
