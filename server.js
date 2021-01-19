@@ -17,11 +17,21 @@ app.get('/user', (req,res)=>{
     res.end(JSON.stringify(usersArray));
 });
 
+app.get('/singleUser', (req,res) => {
+    let usersObject = JSON.parse(fs.readFileSync('./data/user.json'));
+    let usersArray = usersObject.users;
+
+    const singleUser = usersArray.find( user => {
+        return user[0] == req.query.id;
+    });
+    res.status(200).end(JSON.stringify(singleUser));
+});
+
 app.post('/user', (req,res)=>{
 
     let usersObject = JSON.parse(fs.readFileSync('./data/user.json'));
     let usersArray = usersObject.users;
-    
+
     const errorArray = validateData([req.body.name,req.body.mail,req.body.pass]);
 
     if(!errorArray){

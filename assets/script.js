@@ -22,15 +22,27 @@ form.addEventListener('submit', e => {
 let userToEdit = [];
 document.addEventListener('click', e => {
     if(e.target.matches('.edit-btn')){
+
+        if(userToEdit.length > 0) return;
         const userID = parseInt(e.target.dataset.userid);
-        const newUser = {
-        name : prompt('New Name'),
-        mail : prompt('New Email'),
-        pass : prompt('New Password')
-        };
-        editUser(userID, newUser);
+        const row = e.target.closest('tr');
+
+        let user;
+        getOne(userID).then( result => {
+
+            userToEdit = result;
+
+            for(let i = 0; i < 4; i++){
+                if(i==0){
+                    row.children[i].innerHTML = `<button id="user-cancel" class="btn btn-warning">X</button>`;
+                }
+                else{
+                    row.children[i].innerHTML = `<input class="form-control" value="${userToEdit[i]}">`
+                }
+            }
+        });
     }
-    else if(e.target.matches('.delete-btn')){
+    else if(e.target.matches('#user-cancel')){
 
     }
     else if(e.target.matches('.ok-button')){
@@ -61,6 +73,22 @@ function getUsers(){
         const users = JSON.parse(res);
         renderUsers(users);
     });
+};
+
+async function getOne(id) {
+    let result;
+    try{
+        result = await $.ajax({
+            url: '/singleUser',
+            type: 'GET',
+            data: {id : id},
+            contentType: 'application/json'
+        });
+        return JSON.parse(result);
+    }
+    catch(error){
+        console.error(error);
+    };
 };
 
 // POST / create
