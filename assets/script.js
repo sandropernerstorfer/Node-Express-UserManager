@@ -3,6 +3,7 @@ const table = document.querySelector('#table-users');
 const users = document.querySelector('#users-tab');
 const create = document.querySelector('#create-tab');
 const formErrors = document.querySelectorAll('.form-error');
+const editErrBox = document.querySelector('#edit-errors');
 const countBadge = document.querySelector('#user-count');
 
 getUsers();
@@ -20,31 +21,40 @@ form.addEventListener('submit', e => {
 
 // Edit User Handling
 let userToEdit = [];
+let row;
+let btnsReady = true;
+
 document.addEventListener('click', e => {
+    if(!btnsReady) return;
     if(e.target.matches('.edit-btn')){
 
         if(userToEdit.length > 0) return;
+        btnsReady = false;
         const userID = parseInt(e.target.dataset.userid);
-        const row = e.target.closest('tr');
-
-        let user;
+        row = e.target.closest('tr');
+        
         getOne(userID).then( result => {
-
             userToEdit = result;
 
             for(let i = 0; i < 4; i++){
                 if(i==0){
-                    row.children[i].innerHTML = `<button id="user-cancel" class="btn btn-warning">X</button>`;
+                    row.children[i].innerHTML = `<button id="user-cancel" class="btn btn-warning">x</button>`;
                 }
                 else{
                     row.children[i].innerHTML = `<input class="form-control" value="${userToEdit[i]}">`
                 }
             };
             e.target.parentElement.innerHTML = `<button id="user-save" class="btn btn-info" data-userid="${userToEdit[0]}">Save</button>`;
+            
+            setTimeout(() => {
+                btnsReady = true;
+            }, 200);
         });
     }
     else if(e.target.matches('#user-cancel')){
-        const row = e.target.closest('tr');
+        editError();
+        row = e.target.closest('tr');
+        row.style.height = "50px";
         for(let i = 0; i < 4; i++){
             row.children[i].innerHTML = userToEdit[i];
         };
@@ -52,7 +62,8 @@ document.addEventListener('click', e => {
         userToEdit = [];
     }
     else if(e.target.matches('#user-save')){
-        const row = e.target.closest('tr');
+        btnsReady = false;
+        row = e.target.closest('tr');
         let newData = [];
         for(let i = 1; i < 4; i++){
             newData.push(row.children[i].children[0].value);
@@ -80,7 +91,7 @@ create.addEventListener('click', () => {
     formError();
 });
 
-// GET / render
+// GET / render Users
 function getUsers(){
     $.ajax({
         url: '/user',
@@ -88,9 +99,13 @@ function getUsers(){
     }).done(res => {
         const users = JSON.parse(res);
         renderUsers(users);
+        setTimeout(() => {
+            btnsReady = true;
+        }, 200);
     });
 };
 
+// GET / single User
 async function getOne(id) {
     let result;
     try{
@@ -118,6 +133,10 @@ function createUser(object){
             if(res == ''){
                 getUsers();
                 users.click();
+                setTimeout(() => {
+                    scroll({top:document.body.scrollHeight,behavior:"smooth"});
+                }, 300);
+                
                 form.reset();
                 formError();
             }
@@ -141,6 +160,7 @@ function editUser(id, object){
                 editError();
             }
             else{
+                btnsReady = true;
                 editError(JSON.parse(res));
             };
     });
@@ -185,6 +205,16 @@ function formError(msgArray = ['','','']){
     };
 };
 
+// Edit Error Messages
 function editError(msgArray = ['','','']){
-    console.log(msgArray);
+    editErrBox.innerHTML = '';
+    for(let i = 0; msgArray.length > i; i++){
+        if(msgArray[i] == '') continue;
+        editErrBox.innerHTML += `<span>${msgArray[i]}</span>`;
+    }
+    if(msgArray[0]+msgArray[1]+msgArray[2] == ''){
+        editErrBox.style.top = '-50px';
+        return; 
+    }
+    editErrBox.style.top = '0';
 };
