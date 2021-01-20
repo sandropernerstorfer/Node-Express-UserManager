@@ -77,6 +77,9 @@ app.put('/user/:uid', (req,res)=>{
     let usersArray = usersObject.users;
     const userID = parseInt(req.params.uid);
 
+    const errorArray = validateData([req.body.name,req.body.mail,req.body.pass]);
+
+    if(!errorArray){
     usersArray.forEach( user => {
         if(user[0] == userID){
             user[1] = req.body.name;
@@ -89,7 +92,11 @@ app.put('/user/:uid', (req,res)=>{
     fs.writeFile('./data/user.json', JSON.stringify(usersObject) , (err)=>{
         if(err) throw err;
     })
-    res.status(200).end(); 
+    res.status(200).end();
+    }
+    else{
+        res.status(200).end(JSON.stringify(errorArray));
+    };
 });
 
 function validateData(newData){

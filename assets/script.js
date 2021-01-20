@@ -39,14 +39,30 @@ document.addEventListener('click', e => {
                 else{
                     row.children[i].innerHTML = `<input class="form-control" value="${userToEdit[i]}">`
                 }
-            }
+            };
+            e.target.parentElement.innerHTML = `<button id="user-save" class="btn btn-info" data-userid="${userToEdit[0]}">Save</button>`;
         });
     }
     else if(e.target.matches('#user-cancel')){
-
+        const row = e.target.closest('tr');
+        for(let i = 0; i < 4; i++){
+            row.children[i].innerHTML = userToEdit[i];
+        };
+        row.children[4].innerHTML = `<button class="btn btn-info edit-btn" data-userid="${userToEdit[0]}">Edit</button>`;
+        userToEdit = [];
     }
-    else if(e.target.matches('.ok-button')){
-
+    else if(e.target.matches('#user-save')){
+        const row = e.target.closest('tr');
+        let newData = [];
+        for(let i = 1; i < 4; i++){
+            newData.push(row.children[i].children[0].value);
+        }
+        const newUser = {
+            name: newData[0],
+            mail: newData[1],
+            pass: newData[2]
+        };
+        editUser(userToEdit[0], newUser);
     }
     else return;
 });
@@ -119,7 +135,14 @@ function editUser(id, object){
         data: JSON.stringify(object),
         contentType:'application/json'
         }).done(res => {
-            getUsers();
+            if(res == ''){
+                getUsers();
+                userToEdit = [];
+                editError();
+            }
+            else{
+                editError(JSON.parse(res));
+            };
     });
 };
 
@@ -160,4 +183,8 @@ function formError(msgArray = ['','','']){
     for(let i = 0; msgArray.length > i; i++){
         formErrors[i].innerText = msgArray[i];
     };
+};
+
+function editError(msgArray = ['','','']){
+    console.log(msgArray);
 };
