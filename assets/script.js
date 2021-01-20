@@ -5,10 +5,12 @@ const create = document.querySelector('#create-tab');
 const formErrors = document.querySelectorAll('.form-error');
 const editErrBox = document.querySelector('#edit-errors');
 const countBadge = document.querySelector('#user-count');
+let userToEdit = [];    // array that holds the user getting updated
+let row;                // stores the different table-rows depending on btnclick
+let btnsReady = true;   // depending on response status the buttons are function ready
+getUsers();             // renders user-table on pageload
 
-getUsers();
-
-// Create User Form
+// 'Create-User' Form
 form.addEventListener('submit', e => {
     e.preventDefault();
     const newUser = {
@@ -19,11 +21,7 @@ form.addEventListener('submit', e => {
     createUser(newUser);
 });
 
-// Edit User Handling
-let userToEdit = [];
-let row;
-let btnsReady = true;
-
+// 'User-Table' Functions
 document.addEventListener('click', e => {
     if(!btnsReady) return;
     if(e.target.matches('.edit-btn')){
@@ -78,7 +76,7 @@ document.addEventListener('click', e => {
     else return;
 });
 
-// Delete User Button
+// 'Delete-User' Button
 document.addEventListener('click', e => {
     if(!e.target.matches('.delete-btn')) return;
 
