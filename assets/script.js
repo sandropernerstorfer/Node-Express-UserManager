@@ -58,6 +58,7 @@ document.addEventListener('click', e => {
         };
         row.children[4].innerHTML = `<button class="btn btn-info edit-btn" data-userid="${userToEdit[0]}">Edit</button>`;
         userToEdit = [];
+        row = undefined;
     }
     else if(e.target.matches('#user-save')){
         btnsReady = false;
@@ -68,7 +69,7 @@ document.addEventListener('click', e => {
         }
         const newUser = {
             name: newData[0],
-            mail: newData[1],
+            mail: newData[1] == userToEdit[2] ? false : newData[1],
             pass: newData[2]
         };
         editUser(userToEdit[0], newUser);
@@ -87,6 +88,11 @@ document.addEventListener('click', e => {
 // Clear Errors on Form Open
 create.addEventListener('click', () => {
     formError();
+    editError();
+    if(row != undefined){
+        row.children[0].children[0].click();
+        row = undefined;
+    };
 });
 
 // GET / render Users

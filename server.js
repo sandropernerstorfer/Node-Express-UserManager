@@ -78,12 +78,12 @@ app.put('/user/:uid', (req,res)=>{
     const userID = parseInt(req.params.uid);
 
     const errorArray = validateData([req.body.name,req.body.mail,req.body.pass]);
-
+    
     if(!errorArray){
     usersArray.forEach( user => {
         if(user[0] == userID){
             user[1] = req.body.name;
-            user[2] = req.body.mail;
+            user[2] = req.body.mail == false ? user[2] : req.body.mail;
             user[3] = req.body.pass;
         }
     });
@@ -102,8 +102,24 @@ app.put('/user/:uid', (req,res)=>{
 function validateData(newData){
     let errMsg = [];
     errMsg.push(newData[0].trim().length < 2 ? 'Name: at least 2 characters' : '');
-    errMsg.push(!newData[1].includes('@')|| !newData[1].includes('.') ? 'Enter a valid Email-Address' : '');
+    if(newData[1] !== false){
+        errMsg.push(!newData[1].includes('@') || !newData[1].includes('.') ? 'Enter a valid Email-Address' : '');   
+    }
+    else{ errMsg.push('')};
+    
     errMsg.push(newData[2].trim().length < 8 ? 'Password: at least 8 characters' : '');
 
+    let usersObject = JSON.parse(fs.readFileSync('./data/user.json'));
+    let usersArray = usersObject.users;
+
+    if(newData[1] !== false){
+        const searchMail = usersArray.filter(user => {
+            return user[2] == newData[1];
+        });
+
+        if(searchMail.length > 0){
+            errMsg[1] = 'Mail already in use';
+        };
+    };
     return errMsg[0]+errMsg[1]+errMsg[2] == '' ? false : errMsg;
-}
+};
