@@ -43,6 +43,10 @@ th{
     border: 0 !important;
 }
 
+tr th:first-child{
+    width: 80px;
+}
+
 tr input{
     height: 28px !important;
     width: 100% !important;
@@ -52,6 +56,7 @@ td{
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
+    padding: 20px 12px !important;
 }
 
 tr td:nth-child(1){
