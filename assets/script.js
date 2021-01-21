@@ -52,9 +52,9 @@ document.addEventListener('click', e => {
     else if(e.target.matches('#user-cancel')){
         editError();
         row = e.target.closest('tr');
-        row.style.height = "50px";
         for(let i = 0; i < 4; i++){
-            row.children[i].innerHTML = userToEdit[i];
+            if(i == 3){ row.children[i].innerHTML = hidePassword(userToEdit[i].length) }
+            else{row.children[i].innerHTML = userToEdit[i];}
         };
         row.children[4].innerHTML = `<button class="btn btn-info edit-btn" data-userid="${userToEdit[0]}">Edit</button>`;
         userToEdit = [];
@@ -177,23 +177,23 @@ function deleteUser(id){
 // Render Users into list
 function renderUsers(users){
     let userCount = 0;
-        table.innerHTML = '';
-        users.forEach(user => {
-            userCount++;
-            let userHtml = 
-            `
-            <tr>
-                <td>${user[0]}</td>
-                <td>${user[1]}</td>
-                <td>${user[2]}</td>
-                <td>${user[3]}</td>
-                <td><button class="btn btn-info edit-btn" data-userid="${user[0]}">Edit</button></td>
-                <td><button class="btn btn-danger delete-btn" data-userid="${user[0]}">Delete</button></td>
-            </tr>
-            `;
-            table.innerHTML += userHtml;
-        });
-        countBadge.innerText = userCount;
+    table.innerHTML = '';
+    users.forEach(user => {
+        userCount++;
+        let userHtml = 
+        `
+        <tr>
+            <td>${user[0]}</td>
+            <td>${user[1]}</td>
+            <td>${user[2]}</td>
+            <td>${hidePassword(user[3].length)}</td>
+            <td><button class="btn btn-info edit-btn" data-userid="${user[0]}">Edit</button></td>
+            <td><button class="btn btn-danger delete-btn" data-userid="${user[0]}">Delete</button></td>
+        </tr>
+        `;
+        table.innerHTML += userHtml;
+    });
+    countBadge.innerText = userCount;
 };
 
 // Form Error Messages
@@ -215,4 +215,13 @@ function editError(msgArray = ['','','']){
         return; 
     }
     editErrBox.style.top = '0';
+};
+
+// Hide Password w/ Bullet Points
+function hidePassword(length){
+    let bulletPoints = '';
+    for(let i = 0; i < length; i++){
+        bulletPoints += '&bull;';
+    };
+    return bulletPoints;
 };
