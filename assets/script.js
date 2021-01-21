@@ -14,8 +14,8 @@ getUsers();             // renders user-table on pageload
 form.addEventListener('submit', e => {
     e.preventDefault();
     const newUser = {
-        name : form.name.value,
-        mail : form.mail.value,
+        name : form.name.value.toLowerCase(),
+        mail : form.mail.value.toLowerCase(),
         pass : form.pass.value
     };
     createUser(newUser);
@@ -68,8 +68,8 @@ document.addEventListener('click', e => {
             newData.push(row.children[i].children[0].value);
         }
         const newUser = {
-            name: newData[0],
-            mail: newData[1] == userToEdit[2] ? false : newData[1],
+            name: newData[0].toLowerCase(),
+            mail: newData[1].toLowerCase() == userToEdit[2] ? false : newData[1].toLowerCase(),
             pass: newData[2]
         };
         editUser(userToEdit[0], newUser);
