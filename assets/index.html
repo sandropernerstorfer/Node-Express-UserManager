@@ -51,6 +51,18 @@
                 </div>
             </div>
             <div class="tab-pane fade" id="users" role="tabpanel" aria-labelledby="users-tab">
+                <form id="user-sort">
+                    <select name="sortBy">
+                        <option selected value="id">ID</option>
+                        <option value="name">Name</option>
+                        <option value="mail">Mail</option>
+                    </select>
+                    <select name="sortType">
+                        <option selected value="asc">Ascending</option>
+                        <option value="desc">Descending</option>
+                    </select>
+                    <button type="submit" class="btn btn-primary">Sort</button>
+                </form>
                 <table class="table">
                     <thead>
                       <tr>

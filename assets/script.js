@@ -5,10 +5,15 @@ const create = document.querySelector('#create-tab');
 const formErrors = document.querySelectorAll('.form-error');
 const editErrBox = document.querySelector('#edit-errors');
 const countBadge = document.querySelector('#user-count');
+const sortForm = document.querySelector('#user-sort');
 let userToEdit = [];    // array that holds the user getting updated
 let row;                // stores the different table-rows depending on btnclick
 let btnsReady = true;   // depending on response status the buttons are function ready
-getUsers();             // renders user-table on pageload
+
+let sortBy;
+let sortType;
+getSortPref();
+getUsers(sortBy,sortType);             // renders user-table on pageload
 
 // 'Create-User' Form
 form.addEventListener('submit', e => {
@@ -95,10 +100,18 @@ create.addEventListener('click', () => {
     };
 });
 
+sortForm.addEventListener('submit', e => {
+    e.preventDefault();
+    sortType = sortForm.sortType.value;
+    sortBy = sortForm.sortBy.value;
+    setSortPref(sortBy, sortType);
+    getUsers(sortBy, sortType);
+});
+
 // GET / render Users
-function getUsers(){
+function getUsers(sortVal = sortBy, sortMethod = sortType){
     $.ajax({
-        url: '/user',
+        url: '/user?by='+sortVal+'&sort='+sortMethod,
         method: 'GET'
     }).done(res => {
         const users = JSON.parse(res);
@@ -230,4 +243,18 @@ function hidePassword(length){
         bulletPoints += '&bull;';
     };
     return bulletPoints;
+};
+
+function getSortPref(){
+    sortBy = localStorage.getItem('usermanager-sortBy');
+    sortType = localStorage.getItem('usermanager-sortType');
+    if(sortBy == null || sortType == null){
+        setSortPref('id','asc');
+    };
+};
+
+function setSortPref(sortBy, sortType){
+    localStorage.setItem('usermanager-sortBy', sortBy);
+    localStorage.setItem('usermanager-sortType', sortType);
+    getSortPref();
 };

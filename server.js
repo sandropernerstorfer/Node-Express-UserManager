@@ -14,6 +14,9 @@ app.use(express.json());
 app.get('/user', (req,res)=>{
     let usersObject = JSON.parse(fs.readFileSync('./data/user.json'));
     let usersArray = usersObject.users;
+
+    usersArray = sortUsers(usersArray,req.query.by,req.query.sort);
+
     res.end(JSON.stringify(usersArray));
 });
 
@@ -122,4 +125,21 @@ function validateData(newData){
         };
     };
     return errMsg[0]+errMsg[1]+errMsg[2] == '' ? false : errMsg;
+};
+
+function sortUsers(array, sortBy, sortMethod){
+    switch(sortBy){
+        case 'id':
+            break;
+        case 'name':
+            // sort by name
+            break;
+        case 'mail':
+            // sort by mail
+            break;
+        default:
+            break;
+    };
+    if(sortMethod == 'desc') return array.reverse()
+    else return array;
 };
