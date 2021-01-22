@@ -6,14 +6,15 @@ const formErrors = document.querySelectorAll('.form-error');
 const editErrBox = document.querySelector('#edit-errors');
 const countBadge = document.querySelector('#user-count');
 const sortForm = document.querySelector('#user-sort');
-let userToEdit = [];    // array that holds the user getting updated
-let row;                // stores the different table-rows depending on btnclick
-let btnsReady = true;   // depending on response status the buttons are function ready
 
-let sortBy;
-let sortType;
-getSortPref();
-getUsers(sortBy,sortType);             // renders user-table on pageload
+let userToEdit = [];        // array that holds the user getting updated
+let row;                    // stores the different table-rows depending on btnclick
+let btnsReady = true;       // depending on response status the buttons are function ready
+let sortBy;                 // initial sort binding (id,name,mail)
+let sortType;               // initial sort binding (ascending,descending)
+getSortPref();              // check localStorage for sorting Preferences (if empty set to 'asc' by 'id');
+setSortInputs();            // set sort inputs depending on localStorage preference
+getUsers(sortBy,sortType);  // renders user-table on pageload + sorting
 
 // 'Create-User' Form
 form.addEventListener('submit', e => {
@@ -257,4 +258,15 @@ function setSortPref(sortBy, sortType){
     localStorage.setItem('usermanager-sortBy', sortBy);
     localStorage.setItem('usermanager-sortType', sortType);
     getSortPref();
+};
+
+function setSortInputs(){
+    let options1 = Array.from(document.querySelector('#sort-by').querySelectorAll('option'));
+    let options2 = Array.from(document.querySelector('#sort-type').querySelectorAll('option'));
+    let sortInputs = options1.concat(options2);
+    sortInputs.forEach( field => {
+        if(field.value == sortBy || field.value == sortType){
+            field.setAttribute('selected','true');
+        };
+    });
 };
