@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 const fs = require('fs');
+const event = require( 'events' );
 const PORT = 5002;
 
 app.listen(PORT, () => {
@@ -11,13 +12,31 @@ app.use(express.static('assets'));
 app.use(express.urlencoded({extended:true}));
 app.use(express.json());
 
+let userEvent = new event();
+userEvent.on( 'read', ( callback ) => { 
+    fs.readFile( './data/user.json', (err, data ) => {
+        if ( !err ) {
+            try {
+                data = JSON.parse(data);
+            } catch(e) {
+                data = {users:[]};
+            }
+            callback(data);
+        }
+    })
+});
+
 app.get('/user', (req,res)=>{
-    let usersObject = JSON.parse(fs.readFileSync('./data/user.json'));
-    let usersArray = usersObject.users;
-
-    usersArray = sortUsers(usersArray,req.query.by,req.query.sort);
-
-    res.end(JSON.stringify(usersArray));
+    userEvent.emit( 'read', (data)=>{ 
+        let usersArray = data.users;
+        if(usersArray.length == 0){
+            fs.writeFile('./data/user.json', JSON.stringify(data) , (err)=>{
+                if(err) throw err;
+            });
+        };
+        usersArray = sortUsers(usersArray,req.query.by,req.query.sort);
+        res.status(200).end(JSON.stringify(usersArray));
+    });
 });
 
 app.get('/singleUser', (req,res) => {
@@ -128,6 +147,7 @@ function validateData(newData){
 };
 
 function sortUsers(array, sortBy, sortMethod){
+    if(array.length == 0) return array;
     switch(sortBy){
         case 'id':
             sortBy = 0;break;
