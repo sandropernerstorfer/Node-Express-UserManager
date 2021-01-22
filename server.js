@@ -130,16 +130,19 @@ function validateData(newData){
 function sortUsers(array, sortBy, sortMethod){
     switch(sortBy){
         case 'id':
-            break;
+            sortBy = 0;break;
         case 'name':
-            // sort by name
-            break;
+            sortBy = 1;break;
         case 'mail':
-            // sort by mail
-            break;
+            sortBy = 2;break;
         default:
-            break;
+            sortBy = 0;break;
     };
+    array.sort((a,b) => {
+        if(a[sortBy] < b[sortBy]) return -1;
+        if(a[sortBy] > b[sortBy]) return 1;
+        return 0;
+    });
     if(sortMethod == 'desc') return array.reverse()
-    else return array;
+    return array;
 };
