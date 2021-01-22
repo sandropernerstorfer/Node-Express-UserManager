@@ -51,14 +51,21 @@
                 </div>
             </div>
             <div class="tab-pane fade" id="users" role="tabpanel" aria-labelledby="users-tab">
+                <form class="form-inline float-left" id="user-search">
+                    <div class="form-group">
+                        <button type="button" id="clear-search" class="btn btn-danger shadow-none rounded-0">X</button>
+                        <input class="form-control shadow-none mr-2 rounded-0" type="text" name="search">
+                        <button type="submit" class="btn btn-success shadow-none">Search</button>
+                    </div>
+                </form>
                 <form class="form-inline float-right" id="user-sort">
                     <div class="form-group">
-                        <select id="sort-by" class="sort-select form-control shadow-none" name="sortBy">
+                        <select id="sort-by" class="sort-select form-control shadow-none mr-2" name="sortBy">
                             <option value="id">ID</option>
                             <option value="name">Name</option>
                             <option value="mail">Mail</option>
                         </select>
-                        <select id="sort-type" class="sort-select form-control shadow-none" name="sortType">
+                        <select id="sort-type" class="sort-select form-control shadow-none mr-2" name="sortType">
                             <option value="asc">Ascending</option>
                             <option value="desc">Descending</option>
                         </select>

@@ -6,6 +6,8 @@ const formErrors = document.querySelectorAll('.form-error');
 const editErrBox = document.querySelector('#edit-errors');
 const countBadge = document.querySelector('#user-count');
 const sortForm = document.querySelector('#user-sort');
+const searchForm = document.querySelector('#user-search');
+const clearSearch = searchForm.querySelector('#clear-search');
 
 let userToEdit = [];        // array that holds the user getting updated
 let row;                    // stores the different table-rows depending on btnclick
@@ -105,6 +107,17 @@ users.addEventListener('click', () => {
     };
 });
 
+// User-Search Form
+searchForm.addEventListener('submit', e => {
+    e.preventDefault();
+    const query = searchForm.search.value;
+    console.log(query);
+});
+clearSearch.addEventListener('click', () => {
+    searchForm.reset();
+});
+
+// User-Sorting Form
 sortForm.addEventListener('submit', e => {
     e.preventDefault();
     sortType = sortForm.sortType.value;

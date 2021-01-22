@@ -118,8 +118,11 @@ tr td:nth-child(2){
     margin-bottom: 15px;
 }
 
-#user-sort button,select{
+#users button,#users select,#users input{
     height: 25px !important;
     padding: 0px 5px !important;
-    margin-right: 10px !important;
+}
+
+#clear-search{
+    border-radius: 5px 0 0 5px !important;
 }
