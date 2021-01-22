@@ -58,11 +58,12 @@
                             <option value="name">Name</option>
                             <option value="mail">Mail</option>
                         </select>
-                    <select name="sortType">
-                        <option selected value="asc">Ascending</option>
-                        <option value="desc">Descending</option>
-                    </select>
-                    <button type="submit" class="btn btn-primary">Sort</button>
+                        <select id="sort-type" class="sort-select form-control shadow-none" name="sortType">
+                            <option value="asc">Ascending</option>
+                            <option value="desc">Descending</option>
+                        </select>
+                        <button type="submit" class="btn btn-success shadow-none">Sort</button>
+                    </div>
                 </form>
                 <table class="table">
                     <thead>
