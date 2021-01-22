@@ -112,3 +112,13 @@ tr td:nth-child(2){
     border-bottom: 1px solid crimson;
     transition: top 1s;
 }
+
+#user-sort{
+    margin-bottom: 15px;
+}
+
+#user-sort button,select{
+    height: 25px !important;
+    padding: 0px 5px !important;
+    margin-right: 10px !important;
+}
