@@ -95,6 +95,10 @@ document.addEventListener('click', e => {
 create.addEventListener('click', () => {
     formError();
     editError();
+});
+
+// Reset Edit-Mode on Table Open
+users.addEventListener('click', () => {
     if(row != undefined){
         row.children[0].children[0].click();
         row = undefined;
