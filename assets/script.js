@@ -45,13 +45,13 @@ document.addEventListener('click', e => {
 
             for(let i = 0; i < 4; i++){
                 if(i==0){
-                    row.children[i].innerHTML = `<button id="user-cancel" class="btn btn-warning">x</button>`;
+                    row.children[i].innerHTML = `<button id="user-cancel" class="btn btn-info"><i class="fas fa-undo"></i></button>`;
                 }
                 else{
                     row.children[i].innerHTML = `<input class="form-control" value="${userToEdit[i]}">`
                 }
             };
-            e.target.parentElement.innerHTML = `<button id="user-save" class="btn btn-info" data-userid="${userToEdit[0]}">Save</button>`;
+            e.target.parentElement.innerHTML = `<button id="user-save" class="btn btn-success" data-userid="${userToEdit[0]}"><i class="fas fa-check"></i></button>`;
             
             setTimeout(() => {
                 btnsReady = true;
@@ -65,7 +65,7 @@ document.addEventListener('click', e => {
             if(i == 3){ row.children[i].innerHTML = hidePassword(userToEdit[i].length) }
             else{row.children[i].innerHTML = userToEdit[i];}
         };
-        row.children[4].innerHTML = `<button class="btn btn-info edit-btn" data-userid="${userToEdit[0]}">Edit</button>`;
+        row.children[4].innerHTML = `<button class="btn btn-info edit-btn" data-userid="${userToEdit[0]}"><i class="fas fa-user-edit"></i></button>`;
         userToEdit = [];
         row = undefined;
     }
@@ -117,8 +117,8 @@ searchForm.addEventListener('submit', e => {
     const tableNames = Array.from(document.querySelectorAll('[data-name]'));
     const tableMails = Array.from(document.querySelectorAll('[data-mail]'));
     const tableIds = Array.from(document.querySelectorAll('[data-id]'));
-    let found;
-    found = tableNames.find( td => {
+    const tableData = tableNames.concat(tableMails,tableIds);
+    const found = tableData.find( td => {
         if (td.innerText.toLowerCase().indexOf(query) > -1) {
             return td;
         };
@@ -237,8 +237,8 @@ function renderUsers(users){
             <td data-name>${user[1]}</td>
             <td data-mail>${user[2]}</td>
             <td>${hidePassword(user[3].length)}</td>
-            <td><button class="btn btn-info edit-btn" data-userid="${user[0]}">Edit</button></td>
-            <td><button class="btn btn-danger delete-btn" data-userid="${user[0]}">Delete</button></td>
+            <td><button class="btn btn-info edit-btn" data-userid="${user[0]}"><i class="fas fa-user-edit"></i></button></td>
+            <td><button class="btn btn-danger delete-btn" data-userid="${user[0]}"><i class="far fa-trash-alt"></i></button></td>
         </tr>
         `;
         table.innerHTML += userHtml;

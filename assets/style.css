@@ -12,7 +12,7 @@ section{
 }
 
 #table-users tr:nth-child(even){
-    background-color: rgb(230, 230, 230);
+    background-color: rgb(241, 241, 241);
     color: #444;
 }
 
@@ -26,7 +26,7 @@ table{
 }
 
 thead{
-    background-color: rgba(80, 80, 245);
+    background-color: rgb(39, 139, 233);
     color: #fff;
     border: 0 !important;
 }
@@ -36,7 +36,7 @@ th{
 }
 
 tr{
-    transition: background-color 1.2s;
+    transition: background-color 1.2s, color 1.2s;
 }
 
 tr th:first-child{
@@ -59,7 +59,14 @@ tr td:nth-child(1){
     font-weight: 700;
 }
 tr td:nth-child(2){
-    text-transform: uppercase;
+    text-transform: capitalize;
+}
+tr button{
+    width: 40px;
+}
+tr td:nth-child(1) button{
+    border-radius: 50%;
+    width: 27px;
 }
 
 #edit-err-box{
@@ -70,27 +77,51 @@ tr td:nth-child(2){
 }
 
 #user-count{
-    display: inline-block;
-    margin-left: 5px;
-    min-width: 19px;
-    text-align: center;
+    position: absolute;
+    margin-left: 10px;
+    top: 11px;
 }
 
 #users-tab{
-    display: inline-flex;
-    align-items: center;
+    position: relative;
 }
 
 #user-form{
     position: relative;
     margin: 0 auto;
     max-width: 410px;
+    color: rgb(61, 61, 61);
+}
+
+#create h3{
+    color: rgb(80, 80, 80);
+    font-weight: 300;
+}
+
+#user-form input{
+    border: 0;
+    border-bottom: 1px solid rgba(105, 105, 105, 0.616);
+    border-radius: 0;
+}
+#user-form input:focus{
+    border-color: rgb(76, 62, 199);
 }
 
 #user-form small{
     display: inline;
     position: absolute;
+    left: 10px;
+}
+
+#user-form button{
+    border-radius: 20px;
+}
+
+.form-icon{
+    position: absolute;
     right: 10px;
+    bottom: 7px;
+    color: rgba(66, 39, 187, 0.596);
 }
 
 #edit-errors{
@@ -112,10 +143,28 @@ tr td:nth-child(2){
 #user-sort{
     margin-bottom: 15px;
 }
+#user-sort select:first-child{
+    border-right: 0;
+    border-radius: 15px 0 0 15px;
+}
+#user-sort select:nth-child(2){
+    border-left: 0;
+    border-radius: 0;
+    border-top-right-radius: 15px;
+    border-bottom-right-radius: 15px;
+}
+#user-sort select:focus{
+    border-color: #ccc;
+}
 
 #users button,#users select,#users input{
-    height: 25px !important;
+    height: 27px !important;
     padding: 0px 5px !important;
+    border-radius: 15px;
+}
+
+#user-sort button{
+    width: 30px;
 }
 
 #user-search input{
@@ -132,5 +181,10 @@ tr td:nth-child(2){
 }
 
 .user-found{
-    background-color: greenyellow !important;
+    background-color: rgba(137, 255, 147, 0.747) !important;
+    color: rgb(0, 0, 0) !important;
+}
+
+button i{
+    pointer-events: none;
 }
