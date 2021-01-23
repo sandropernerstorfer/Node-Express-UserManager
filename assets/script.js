@@ -11,7 +11,7 @@ const clearSearch = searchForm.querySelector('#clear-search');
 
 let userToEdit = [];        // array that holds the user getting updated
 let row;                    // stores the different table-rows depending on btnclick
-let btnsReady = true;       // depending on response status the buttons are function ready
+let btnsReady = true;
 let searchReady = true;
 let sortBy;                 // initial sort binding (id,name,mail)
 let sortType;               // initial sort binding (ascending,descending)
@@ -276,6 +276,7 @@ function hidePassword(length){
     return bulletPoints;
 };
 
+// Get User-Sorting Pref. localStorage
 function getSortPref(){
     sortBy = localStorage.getItem('usermanager-sortBy');
     sortType = localStorage.getItem('usermanager-sortType');
@@ -284,12 +285,14 @@ function getSortPref(){
     };
 };
 
+// Set User-Sorting in localStorage
 function setSortPref(sortBy, sortType){
     localStorage.setItem('usermanager-sortBy', sortBy);
     localStorage.setItem('usermanager-sortType', sortType);
     getSortPref();
 };
 
+// Set Sort-Select inputs depending on preference
 function setSortInputs(){
     let options1 = Array.from(document.querySelector('#sort-by').querySelectorAll('option'));
     let options2 = Array.from(document.querySelector('#sort-type').querySelectorAll('option'));
@@ -301,6 +304,7 @@ function setSortInputs(){
     });
 };
 
+// Mark user after Search
 function markFoundUser(found){
     found.scrollIntoView({behavior:'smooth', block: 'start'});
     found.closest('tr').classList.toggle('user-found');
