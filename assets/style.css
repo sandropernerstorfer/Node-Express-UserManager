@@ -20,12 +20,6 @@ section{
     padding: 1px 5px;
 }
 
-#table-head{
-    position: sticky;
-    top: 0;
-    background-color: #fff;
-}
-
 table{
     position: relative;
     table-layout: fixed;
@@ -34,14 +28,15 @@ table{
 thead{
     background-color: rgba(80, 80, 245);
     color: #fff;
+    border: 0 !important;
 }
 
 th{
-    position: sticky;
-    top: 0;
-    margin-top: 0;
-    background-color: rgba(80, 80, 245);
     border: 0 !important;
+}
+
+tr{
+    transition: background-color 1.2s;
 }
 
 tr th:first-child{
@@ -123,6 +118,19 @@ tr td:nth-child(2){
     padding: 0px 5px !important;
 }
 
+#user-search input{
+    border-radius: 0 15px 15px 0 !important;
+}
+
+#user-search button{
+    border-radius: 20px;
+}
+
 #clear-search{
-    border-radius: 5px 0 0 5px !important;
+    width: 30px;
+    border-radius: 15px 0 0 15px !important;
+}
+
+.user-found{
+    background-color: greenyellow !important;
 }

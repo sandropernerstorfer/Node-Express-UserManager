@@ -12,6 +12,7 @@ const clearSearch = searchForm.querySelector('#clear-search');
 let userToEdit = [];        // array that holds the user getting updated
 let row;                    // stores the different table-rows depending on btnclick
 let btnsReady = true;       // depending on response status the buttons are function ready
+let searchReady = true;
 let sortBy;                 // initial sort binding (id,name,mail)
 let sortType;               // initial sort binding (ascending,descending)
 getSortPref();              // check localStorage for sorting Preferences (if empty set to 'asc' by 'id');
@@ -110,8 +111,21 @@ users.addEventListener('click', () => {
 // User-Search Form
 searchForm.addEventListener('submit', e => {
     e.preventDefault();
-    const query = searchForm.search.value;
-    console.log(query);
+    if(!searchReady) return;
+    const query = searchForm.search.value.toLowerCase();
+    if(query == '') return;
+    const tableNames = Array.from(document.querySelectorAll('[data-name]'));
+    const tableMails = Array.from(document.querySelectorAll('[data-mail]'));
+    const tableIds = Array.from(document.querySelectorAll('[data-id]'));
+    let found;
+    found = tableNames.find( td => {
+        if (td.innerText.toLowerCase().indexOf(query) > -1) {
+            return td;
+        };
+    });
+    if(found != undefined){
+        markFoundUser(found);
+    };
 });
 clearSearch.addEventListener('click', () => {
     searchForm.reset();
@@ -168,10 +182,9 @@ function createUser(object){
             if(res == ''){
                 getUsers();
                 users.click();
-                setTimeout(() => {
-                    scroll({top:document.body.scrollHeight,behavior:"smooth"});
-                }, 300);
-                
+                // setTimeout(() => {
+                //     scroll({top:document.body.scrollHeight,behavior:"smooth"});
+                // }, 300);
                 form.reset();
                 formError();
             }
@@ -220,9 +233,9 @@ function renderUsers(users){
         let userHtml = 
         `
         <tr>
-            <td>${user[0]}</td>
-            <td>${user[1]}</td>
-            <td>${user[2]}</td>
+            <td data-id>${user[0]}</td>
+            <td data-name>${user[1]}</td>
+            <td data-mail>${user[2]}</td>
             <td>${hidePassword(user[3].length)}</td>
             <td><button class="btn btn-info edit-btn" data-userid="${user[0]}">Edit</button></td>
             <td><button class="btn btn-danger delete-btn" data-userid="${user[0]}">Delete</button></td>
@@ -286,4 +299,14 @@ function setSortInputs(){
             field.setAttribute('selected','true');
         };
     });
+};
+
+function markFoundUser(found){
+    found.scrollIntoView({behavior:'smooth', block: 'start'});
+    found.closest('tr').classList.toggle('user-found');
+    searchReady = false;
+    setTimeout(() => {
+        found.closest('tr').classList.toggle('user-found');
+        searchReady = true;
+    }, 1200);
 };
