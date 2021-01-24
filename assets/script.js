@@ -98,6 +98,7 @@ document.addEventListener('click', e => {
 create.addEventListener('click', () => {
     formError();
     editError();
+    form.reset();
 });
 
 // Reset Edit-Mode on Table Open
@@ -182,10 +183,6 @@ function createUser(object){
             if(res == ''){
                 getUsers();
                 users.click();
-                // setTimeout(() => {
-                //     scroll({top:document.body.scrollHeight,behavior:"smooth"});
-                // }, 300);
-                form.reset();
                 formError();
             }
             else{

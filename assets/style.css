@@ -7,6 +7,15 @@ section{
     padding: 60px 30px;
 }
 
+#main-tabs a{
+    color: rgb(71, 71, 71);
+}
+
+#users-tab{
+    width: 130px;
+    text-align: left;
+}
+
 #tab-content{
     padding: 20px;
 }
