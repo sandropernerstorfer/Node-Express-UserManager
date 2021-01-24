@@ -121,9 +121,9 @@ app.put('/user/:uid', (req,res)=>{
     };
 });
 
-app.get('/:all', (req,res) => {
-    res.redirect('/')
-});
+// app.get('/:all', (req,res) => {
+//     res.redirect('/')
+// });
 
 function validateData(newData){
     let errMsg = [];
