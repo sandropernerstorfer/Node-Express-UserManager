@@ -2,10 +2,10 @@ const express = require('express');
 const app = express();
 const fs = require('fs');
 const event = require( 'events' );
-const PORT = 3000;
+const customPort = 3000;
 
-app.listen(PORT, () => {
-    console.log(`Express Server listening on Port ${PORT}`);
+app.listen(process.env.PORT || customPort, () => {
+    console.log(`User-Manager Express-Server listening`);
 });
 
 app.use(express.static('assets'));
@@ -121,9 +121,9 @@ app.put('/user/:uid', (req,res)=>{
     };
 });
 
-// app.get('/:all', (req,res) => {
-//     res.redirect('/')
-// });
+app.get('/:all', (req,res) => {
+    res.redirect('/')
+});
 
 function validateData(newData){
     let errMsg = [];
