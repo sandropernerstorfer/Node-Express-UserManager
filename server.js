@@ -121,6 +121,10 @@ app.put('/user/:uid', (req,res)=>{
     };
 });
 
+app.get('/:all', (req,res) => {
+    res.redirect('/')
+});
+
 function validateData(newData){
     let errMsg = [];
     errMsg.push(newData[0].trim().length < 2 ? 'Name: at least 2 characters' : '');
