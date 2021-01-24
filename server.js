@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 const fs = require('fs');
 const event = require( 'events' );
-const PORT = 5002;
+const PORT = 3000;
 
 app.listen(PORT, () => {
     console.log(`Express Server listening on Port ${PORT}`);
