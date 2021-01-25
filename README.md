@@ -1,3 +1,7 @@
 # Node-Express-UserManager
-Small app-playground built with NodeJS, ExpressJS and Bootstrap to work and play around with Requests.
+Small User-Management System built with NodeJS, ExpressJS and Bootstrap.
 Create, Delete, Edit and Render Users.
+
+Including Validation , Sorting- and Search-Functions
+
+https://node-express-user-manager.herokuapp.com/
